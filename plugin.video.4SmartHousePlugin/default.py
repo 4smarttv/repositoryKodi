@@ -1,4 +1,4 @@
-﻿import sys
+import sys
 import xbmcgui
 import urllib
 import urllib2
@@ -59,6 +59,15 @@ def OpenURL(url):   # get remote data file
     response.close()
     return link
 
+def file_exists(url):
+    request = urllib2.Request(url)
+    request.get_method = lambda : 'HEAD'
+    try:
+        response = urllib2.urlopen(request)
+        return True
+    except:
+        return False
+
 pluginUrl = str(sys.argv[0])
 pluginHandle = int(sys.argv[1])
 pluginQuery = str(sys.argv[2])
@@ -108,6 +117,8 @@ def getPlugin():
       else:
         #image = 'http://4Smarttvbox.com/Channel_Images4/click_Install.png'
         image = 'http://4Smarttvbox.com/Plugin_Image/'+Name+'.png'
+        if file_exists(image)==False:
+          image = 'http://4Smarttvbox.com/Channel_Images4/click_Install.png'
         #urlPlugin='ActivateWindow(10025,&quot;plugin://plugin.video.viettv24free/&quot;,return)'
         #urlPlugin='ActivateWindow(10025,plugin://plugin.video.viettv24free/)'
         urlPlugin='ActivateWindow(10025,plugin://'+Name+'/)'
